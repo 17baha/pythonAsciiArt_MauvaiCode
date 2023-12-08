@@ -1,0 +1,48 @@
+from PIL import Image, ImageDraw, ImageFont
+import requests
+from io import BytesIO
+from art import text2art
+
+u_3_r_4_l = "https://gcdnb.pbrd.co/images/38pKnwKnf8cN.png?o=1"
+
+rss = requests.get("https://gcdnb.pbrd.co/images/38pKnwKnf8cN.png?o=1")
+
+img = Image.open(BytesIO(rss.content)).convert('L')
+
+c0_3_ = "@%#*+=-. "
+
+_font____01size_ = 8
+_char____02width_ = 6
+_char____03height_ = 12
+
+output_img__ = Image.new("RGB", (img.width * _char____02width_, img.height * _char____03height_), "white")
+draw = ImageDraw.Draw(output_img__)
+
+ff = ImageFont.load_default()
+y=0
+for y in range(img.height):
+    for x in range(img.width):
+        brightness = img.getpixel((x, y))
+        char = c0_3_[brightness * (len(c0_3_) - 1) // 255]
+        draw.text((x * _char____02width_, y * _char____03height_), char, font=ff, fill="black")
+
+ascii_text = text2art("climate change", font='block', chr_ignore=True)
+
+ascii_img = Image.new("RGB", (output_img__.width, output_img__.height + 50), "white")
+ascii_draw = ImageDraw.Draw(ascii_img)
+
+hidden_text1 = "climate"
+hidden_text2 = "||climate"
+hidden_text3 = "climate||"
+hidden_text4 = "||climate||"
+
+ascii_draw.text((0, 0), hidden_text1, font=ff, fill="black")
+ascii_draw.text((30, 30), hidden_text2, font=ff, fill="black")
+ascii_draw.text((60, 60), hidden_text3, font=ff, fill="black")
+ascii_draw.text((90, 90), hidden_text4, font=ff, fill="black")
+
+ascii_draw.text((0, 150), ascii_text, font=ff, fill="black")
+ascii_img.paste(output_img__, (0, 150))
+
+o = ascii_img
+o.save("ascii_art_output.png")
